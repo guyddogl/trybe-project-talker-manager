@@ -1,8 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers, getTalkerById } = require('./utils/handleTalkers');
-const generateToken = require('./utils/token');
+const { getAllTalkers, getTalkerById, createNewTalker } = require('./utils/handleTalkers');
+const { generateToken, validateToken } = require('./utils/token');
 const { validateEmail, validatePassword } = require('./middleware/validateLogin');
+const { validateTalkerName, validateTalkerAge, validateTalkerTalk,
+  validateTalkRate, validateTalkWatchDate } = require('./middleware/validateTalker');
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,6 +12,7 @@ app.use(bodyParser.json());
 const PORT = '3000';
 
 const HTTP_OK_STATUS = 200;
+const CREATED = 201;
 const NOT_FOUND = 404;
 
 // não remova esse endpoint, e para o avaliador funcionar!
@@ -34,5 +37,12 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 app.post('/login', validateEmail, validatePassword, async (_req, res) => {
-  res.status(200).json({ token: generateToken() });
+  res.status(HTTP_OK_STATUS).json({ token: generateToken() });
+});
+
+app.post('/talker', validateToken, validateTalkerName, validateTalkerAge, validateTalkerTalk, 
+validateTalkRate, validateTalkWatchDate, async (req, res) => {
+  const { name, age, talk } = req.body;
+  const newTalker = await createNewTalker(name, age, talk);
+  res.status(CREATED).json(newTalker);
 });
