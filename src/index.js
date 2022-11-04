@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers, getTalkerById, createNewTalker } = require('./utils/handleTalkers');
+const { getAllTalkers, getTalkerById, createNewTalker } = require('./utils/talkers');
 const { generateToken, validateToken } = require('./utils/token');
 const { validateEmail, validatePassword } = require('./middleware/validateLogin');
 const { validateTalkerName, validateTalkerAge, validateTalkerTalk,
