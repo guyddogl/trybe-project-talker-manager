@@ -9,6 +9,12 @@ const getAllTalkers = async () => {
   return talkers;
 };
 
+const getTalkerById = async (id) => {
+  const talkers = await getAllTalkers();
+  return talkers.find((talker) => talker.id === Number(id));
+};
+
 module.exports = {
   getAllTalkers,
+  getTalkerById,
 };
