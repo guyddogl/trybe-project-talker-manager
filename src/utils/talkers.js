@@ -40,9 +40,16 @@ const updateTalker = async (id, name, age, talk) => {
   return { id: Number(id), name, age, talk };
 };
 
+const deleteTalker = async (id) => {
+  const talkers = await getAllTalkers();
+  const deletedTalker = talkers.filter((talker) => talker.id !== Number(id));
+  await writeFile(talkersPath, JSON.stringify(deletedTalker, null, 2));
+};
+
 module.exports = {
   getAllTalkers,
   getTalkerById,
   createNewTalker,
   updateTalker,
+  deleteTalker,
 };

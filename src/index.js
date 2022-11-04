@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { getAllTalkers, getTalkerById, createNewTalker, updateTalker } = require('./utils/talkers');
+const { getAllTalkers, getTalkerById, createNewTalker, updateTalker, 
+  deleteTalker } = require('./utils/talkers');
 const { generateToken, validateToken } = require('./utils/token');
 const { validateEmail, validatePassword } = require('./middleware/validateLogin');
 const { validateTalkerName, validateTalkerAge, validateTalkerTalk,
@@ -13,6 +14,7 @@ const PORT = '3000';
 
 const HTTP_OK_STATUS = 200;
 const CREATED = 201;
+const NO_CONTENT = 204;
 const NOT_FOUND = 404;
 
 // não remova esse endpoint, e para o avaliador funcionar!
@@ -52,6 +54,11 @@ validateTalkRate, validateTalkWatchDate, async (req, res) => {
   const { id } = req.params;
   const { name, age, talk } = req.body;
   const editedTalker = await updateTalker(id, name, age, talk);
-  console.log(editedTalker);
   res.status(HTTP_OK_STATUS).json(editedTalker);
+});
+
+app.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+  await deleteTalker(id);
+  res.status(NO_CONTENT).send();
 });
