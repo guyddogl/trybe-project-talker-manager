@@ -31,15 +31,11 @@ const validateTalkerTalk = (req, res, next) => {
   next();
 };
 
-const rateExist = (rate, res) => {
-  if (!rate && rate !== 0) { 
-    return res.status(BAD_REQUEST).json({ message: 'O campo "rate" é obrigatório' }); 
-  }
-};
-
 const validateTalkRate = (req, res, next) => {
   const { rate } = req.body.talk;
-  rateExist(rate, res);
+  if (rate == null) { 
+    return res.status(BAD_REQUEST).json({ message: 'O campo "rate" é obrigatório' }); 
+  }
   if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
     return res.status(BAD_REQUEST).json({ message: 'O campo "rate" deve ser um inteiro de 1 à 5' });
   }
