@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const loginRouter = require('./routes/loginRoutes');
 const { getAllTalkers, getTalkerById, createNewTalker, updateTalker, 
   deleteTalker, searchTalkers } = require('./utils/talkers');
-const { generateToken, validateToken } = require('./utils/token');
-const { validateEmail, validatePassword } = require('./middleware/validateLogin');
+const { validateToken } = require('./middleware/validateToken');
 const { validateTalkerName, validateTalkerAge, validateTalkerTalk,
   validateTalkRate, validateTalkWatchDate } = require('./middleware/validateTalker');
 
@@ -44,9 +44,7 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.post('/login', validateEmail, validatePassword, async (_req, res) => {
-  res.status(HTTP_OK_STATUS).json({ token: generateToken() });
-});
+app.use('/login', loginRouter);
 
 app.post('/talker', validateToken, validateTalkerName, validateTalkerAge, validateTalkerTalk, 
 validateTalkRate, validateTalkWatchDate, async (req, res) => {
