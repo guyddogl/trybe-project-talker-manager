@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const loginRouter = require('./routes/loginRoutes');
 const { getAllTalkers, getTalkerById, createNewTalker, updateTalker, 
   deleteTalker, searchTalkers } = require('./utils/talkers');
@@ -8,7 +7,7 @@ const { validateTalkerName, validateTalkerAge, validateTalkerTalk,
   validateTalkRate, validateTalkWatchDate } = require('./middleware/validateTalker');
 
 const app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 
 const PORT = '3000';
 
