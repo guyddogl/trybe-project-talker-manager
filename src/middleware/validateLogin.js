@@ -1,13 +1,13 @@
-const BAD_REQUEST = 400;
+const { HTTP_STATUS_BAD_REQUEST } = require('../utils/httpStatus');
 
 const validateEmail = (req, res, next) => {
   const { email } = req.body;
   if (!email) {
-    return res.status(BAD_REQUEST).json({ message: 'O campo "email" é obrigatório' });
+    return res.status(HTTP_STATUS_BAD_REQUEST).json({ message: 'O campo "email" é obrigatório' });
   }
   const isValidEmail = email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g);
   if (!isValidEmail) {
-    return res.status(BAD_REQUEST).json({
+    return res.status(HTTP_STATUS_BAD_REQUEST).json({
       message: 'O "email" deve ter o formato "email@email.com"',
     });
   }
@@ -17,10 +17,11 @@ const validateEmail = (req, res, next) => {
 const validatePassword = (req, res, next) => {
   const { password } = req.body;
   if (!password) {
-    return res.status(BAD_REQUEST).json({ message: 'O campo "password" é obrigatório' });
+    return res.status(HTTP_STATUS_BAD_REQUEST)
+    .json({ message: 'O campo "password" é obrigatório' });
   }
   if (password.toString().length < 6) {
-    return res.status(BAD_REQUEST)
+    return res.status(HTTP_STATUS_BAD_REQUEST)
     .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
   next();
